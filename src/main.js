@@ -11,6 +11,10 @@ import store from './store'
 
 import router from './router'
 
+// 导入路由前置守卫
+// 导入也可以执行js文件
+import './permission'
+
 // 注册svg
 import '@/icons'
 

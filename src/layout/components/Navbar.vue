@@ -13,6 +13,8 @@
           <a target="_blank">
             <el-dropdown-item> 项目地址 </el-dropdown-item>
           </a>
+          <!-- native 才能给组价绑定数据 click只能给原生的Dom绑定 -->
+          <!-- 加上 native之后 实际上是对这个元素的外面包裹的父元素添加了 click事件 -->
           <el-dropdown-item divided @click.native="logout">
             <span style="display: block">退出登录</span>
           </el-dropdown-item>

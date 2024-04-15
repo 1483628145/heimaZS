@@ -1,7 +1,9 @@
 // 导入axios
 import axios from 'axios'
-// 导入vuex
+// 方法导入
 import store from '@/store'
+import { Message } from 'element-ui'
+import router from '@/router'
 
 // axios.create 创建一个axios实例 可以通过实例来请求接口
 // 依然可以使用 request.get request.post 来请求接口
@@ -35,11 +37,24 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     // 成功的时候拿到的数据
-    return response.data
+    // console.log(response.data.data)
+    return response.data.data
   },
   error => {
     // 失败的时候处理
     // 在请求回来的数据是失败的时候可以统一处理
+    // console.dir(error)
+
+    // 判断 Token超时 跳转到登录页
+    if (error.response.status === 401) {
+      // token超时
+      // 清除本地token
+      store.dispatch('user/removeToken')
+      // 跳转到登录
+      router.push('/login')
+    }
+
+    Message.error(error.response.data.msg)
     return Promise.reject(error)
   }
 )

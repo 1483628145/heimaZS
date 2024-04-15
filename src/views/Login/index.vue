@@ -64,7 +64,7 @@ export default {
         ]
       },
       // 记住账户密码
-      remember: false
+      remember: true
     }
   },
   mounted() {
@@ -88,8 +88,16 @@ export default {
             // // 清除localStorage中的用户信息
             localStorage.removeItem('userInfo')
           }
-          // 跳转到主页
-          this.$router.push('/')
+          // 跳转页面 实现在那个页面出来的就回到那个页面中去
+          // 在 this.$route.redirect 存储着上一次退出的页面路径
+          const toPath = this.$route.query.redirect
+          if (toPath) {
+            // 存储了上一次跳转的页面
+            this.$router.push(`${toPath}`)
+          } else {
+            // 第一次登录
+            this.$route.push('/')
+          }
         } else {
           console.log('error')
           return false

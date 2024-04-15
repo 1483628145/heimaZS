@@ -28,8 +28,8 @@ export default {
   actions: {
     // 获取Token
     async getToken(context, data) {
-      const { data: res } = await login(data)
-      context.commit('setToken', res.token)
+      const res = await login(data)
+      context.commit('setToken', res)
     },
 
     // 删除Token
