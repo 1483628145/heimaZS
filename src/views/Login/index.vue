@@ -3,27 +3,33 @@
     <div class="bg" />
     <div class="box">
       <div class="title">智慧园区-登录</div>
-      <el-form ref="form">
+      <!-- 登录表单 -->
+      <el-form ref="form" :rules="rules" :model="LoginForm">
+        <!-- 登录用户名 -->
         <el-form-item
           label="账号"
           prop="username"
         >
-          <el-input />
+          <el-input v-model="LoginForm.username" />
         </el-form-item>
-
+        <!-- 登录密码 -->
         <el-form-item
           label="密码"
           prop="password"
         >
-          <el-input />
+          <el-input v-model="LoginForm.password" show-password />
         </el-form-item>
-
+        <!-- 勾选协议 -->
         <el-form-item prop="remember">
           <el-checkbox>记住我</el-checkbox>
         </el-form-item>
-
+        <!-- 登录按钮 -->
         <el-form-item>
-          <el-button type="primary" class="login_btn">登录</el-button>
+          <el-button
+            type="primary"
+            class="login_btn"
+            @click="Login"
+          >登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -33,8 +39,50 @@
 <script>
 
 export default {
-  name: 'Login'
-
+  name: 'Login',
+  data() {
+    return {
+      // 登录表单
+      LoginForm: {
+        username: 'admin',
+        password: 'admin123'
+        // isOk: true
+      },
+      // 表单验证规则
+      rules: {
+        username: [
+          {
+            required: true, message: '请输入用户名', trigger: 'blur'
+          }
+        ],
+        password: [
+          {
+            required: true, message: '请输入密码', trigger: 'blur'
+          }
+        ],
+        isOk: [
+          // 使用自定义校验必须是勾选状态
+        ]
+      }
+    }
+  },
+  methods: {
+    // 登录按钮
+    Login() {
+      // 拿到的是当前 ref对象 validate 传入的参数是当前表单校验布尔值 true代表全部通过
+      this.$refs.form.validate(async(valid) => {
+        if (valid) {
+          // 调用vueX登录接口 注意这action是异步的 得等他执行完了成功才跳转
+          await this.$store.dispatch('user/getToken', this.LoginForm)
+          // 跳转到主页
+          this.$router.push('/')
+        } else {
+          console.log('error')
+          return false
+        }
+      })
+    }
+  }
 }
 
 </script>

@@ -1,27 +1,38 @@
 import axios from 'axios'
-const service = axios.create({
+// axios.create 创建一个axios实例 可以通过实例来请求接口
+// 依然可以使用 request.get request.post 来请求接口
+const request = axios.create({
+  // 基地址 每个接口都相同的部分 后面的接口都会自动拼接到一起
   baseURL: 'https://api-hmzs.itheima.net/v1',
+  // 超时时间
   timeout: 5000 // request timeout
 })
 
-// 请求拦截器
-service.interceptors.request.use(
+// 请求拦截器  ---请求之前做的事
+request.interceptors.request.use(
   config => {
+    // config 就是请求数据 不能省略return
+    // 通常配置保存token
     return config
   },
   error => {
+    // 发生错误的时候
     return Promise.reject(error)
   }
 )
 
-// 响应拦截器
-service.interceptors.response.use(
+// 响应拦截器  ---拿到数据后做的事情
+// 数据返回的时候第一个到达的位置
+request.interceptors.response.use(
   response => {
+    // 成功的时候拿到的数据
     return response.data
   },
   error => {
+    // 失败的时候处理
+    // 在请求回来的数据是失败的时候可以统一处理
     return Promise.reject(error)
   }
 )
 
-export default service
+export default request

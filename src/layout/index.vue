@@ -1,8 +1,12 @@
 <template>
   <div class="app-wrapper">
+    <!-- 左侧导航 -->
     <sidebar class="sidebar-container" />
+    <!-- 右侧主体区域 -->
     <div class="main-container">
+      <!-- 头部导航栏 -->
       <navbar />
+      <!-- 中间主体区域 -->
       <app-main />
     </div>
   </div>

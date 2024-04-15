@@ -20,6 +20,7 @@ export const routes = [
   {
     path: '/workbench',
     component: Layout,
+    // 通过children嵌套二级路由
     children: [{
       path: '',
       component: () => import('@/views/Workbench/index'),
@@ -120,6 +121,7 @@ export const routes = [
   }
 ]
 
+// 路由配置项
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   mode: 'history',
