@@ -19,9 +19,9 @@
         >
           <el-input v-model="LoginForm.password" show-password />
         </el-form-item>
-        <!-- 勾选协议 -->
+        <!-- 记住密码 -->
         <el-form-item prop="remember">
-          <el-checkbox>记住我</el-checkbox>
+          <el-checkbox v-model="remember">记住我</el-checkbox>
         </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
@@ -44,9 +44,8 @@ export default {
     return {
       // 登录表单
       LoginForm: {
-        username: 'admin',
-        password: 'admin123'
-        // isOk: true
+        username: '',
+        password: ''
       },
       // 表单验证规则
       rules: {
@@ -63,8 +62,14 @@ export default {
         isOk: [
           // 使用自定义校验必须是勾选状态
         ]
-      }
+      },
+      // 记住账户密码
+      remember: false
     }
+  },
+  mounted() {
+    // 保存用户数据
+    this.setUserInfo()
   },
   methods: {
     // 登录按钮
@@ -74,6 +79,15 @@ export default {
         if (valid) {
           // 调用vueX登录接口 注意这action是异步的 得等他执行完了成功才跳转
           await this.$store.dispatch('user/getToken', this.LoginForm)
+          if (this.remember) {
+            // 如果点击了记住我 那么将用户信息存储在本地
+            // 设置用户信息到localStorage
+            localStorage.setItem('userInfo', JSON.stringify(this.LoginForm))
+          } else {
+            // 没有点击记住我 那么将用户信息删除
+            // // 清除localStorage中的用户信息
+            localStorage.removeItem('userInfo')
+          }
           // 跳转到主页
           this.$router.push('/')
         } else {
@@ -81,6 +95,14 @@ export default {
           return false
         }
       })
+    },
+    // 保存本地存储的用户信息
+    setUserInfo() {
+      if (localStorage.getItem('userInfo')) {
+        // 从localStorage获取用户信息
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        this.LoginForm = userInfo
+      }
     }
   }
 }

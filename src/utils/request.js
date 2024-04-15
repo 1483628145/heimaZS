@@ -1,4 +1,8 @@
+// 导入axios
 import axios from 'axios'
+// 导入vuex
+import store from '@/store'
+
 // axios.create 创建一个axios实例 可以通过实例来请求接口
 // 依然可以使用 request.get request.post 来请求接口
 const request = axios.create({
@@ -12,7 +16,12 @@ const request = axios.create({
 request.interceptors.request.use(
   config => {
     // config 就是请求数据 不能省略return
-    // 通常配置保存token
+    // 通常配置token 在请求的时候在请求头添加token
+    const token = store.state.user.token
+    // 有token的情况 在请求头前添加 token
+    if (token) {
+      config.headers.Authorization = token
+    }
     return config
   },
   error => {
