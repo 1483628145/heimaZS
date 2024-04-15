@@ -26,7 +26,10 @@
 export default {
   methods: {
     // 退出登录
-    logout() {
+    async logout() {
+      // 清除本地Token 注意action是一个异步的任务
+      await this.$store.dispatch('user/removeToken')
+      // 跳转到登录页面
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }

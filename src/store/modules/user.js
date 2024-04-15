@@ -2,7 +2,7 @@
 import { login } from '@/api/user'
 
 // 导入token方法
-import { getToken, setToken } from '@/utils/auth'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 
 export default {
   // 防止命名冲突
@@ -17,6 +17,11 @@ export default {
       state.token = token
       setToken(token)
       // console.log(state.token)
+    },
+
+    // 删除VueX中的Token
+    removeStateToken(state) {
+      state.token = ''
     }
   },
   // 调用异步函数
@@ -25,6 +30,14 @@ export default {
     async getToken(context, data) {
       const { data: res } = await login(data)
       context.commit('setToken', res.token)
+    },
+
+    // 删除Token
+    removeToken(context) {
+      // 删除掉本地Token
+      removeToken()
+      context.commit('removeStateToken')
     }
+
   }
 }
