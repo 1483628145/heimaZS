@@ -72,7 +72,12 @@ export const routes = [
       permission: 'parking:rule',
       component: () => import('@/views/Car/CarRule'),
       meta: { title: '计费规则管理' }
-    }]
+    },
+    {
+      path: 'addcard',
+      component: () => import('@/views/Car/CarCard/AddCard')
+    }
+    ]
   },
   {
     path: '/property',
